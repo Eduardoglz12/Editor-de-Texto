@@ -18,7 +18,7 @@ namespace Editor_de_Texto
 
         private void salirToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (archivoGuardado == true)
+            if (archivoGuardado == true || rtbEditor.Modified == false)
             {
                 this.Close();
             }
@@ -139,10 +139,25 @@ namespace Editor_de_Texto
 
         private void nuevoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            archivoGuardado = false;
-            filePath = null;
 
-            rtbEditor.Clear();
+            if(archivoGuardado == false && rtbEditor.Modified)
+            {
+                DialogResult resultado;
+                resultado = MessageBox.Show("¿Desea guardar los cambios?", "Nuevo", MessageBoxButtons.YesNoCancel);
+                if (resultado == DialogResult.Yes)
+                {
+                    guardarToolStripMenuItem_Click(sender, e);
+                    rtbEditor.Clear();
+                }
+                else if (resultado == DialogResult.No)
+                {
+                    rtbEditor.Clear();
+                }
+            }
+            else
+            {
+                rtbEditor.Clear();
+            }  
 
         }
 
